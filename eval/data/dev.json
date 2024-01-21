@@ -1,0 +1,602 @@
+[
+    {
+        "db_id": "hn",
+        "query": "SELECT COUNT(*) as domain_count, \nSUBSTRING(SPLIT_PART(url, '//', 2), 1, POSITION('/' IN SPLIT_PART(url, '//', 2)) - 1) as domain \nFROM hacker_news\nWHERE url IS NOT NULL GROUP BY domain ORDER BY domain_count DESC LIMIT 10;",
+        "setup_sql": ";",
+        "validation_sql": "SELECT * FROM ddb_benchmark_result;",
+        "question": "what are the top domains being shared on hacker_news?",
+        "category": "hard"
+    },
+    {
+        "db_id": "laptop",
+        "query": "SELECT c.firstname, c.lastname, COUNT(*) AS num_pcs_bought\nFROM customers c\nJOIN sales s ON c.customer_id = s.customer_id\nJOIN pcs p ON s.model = p.model\nGROUP BY c.customer_id, c.firstname, c.lastname\nORDER BY num_pcs_bought DESC\nLIMIT 1;",
+        "setup_sql": ";",
+        "validation_sql": "SELECT * FROM ddb_benchmark_result;",
+        "question": "Who bought the most PCs, print also the users name?",
+        "category": "medium"
+    },
+    {
+        "db_id": "transactions",
+        "query": "select users.id, users.name, sum(transactions.amount) as balance    from users    join transactions on users.id = transactions.user_id    group by users.id, users.name having balance = 0",
+        "setup_sql": ";",
+        "validation_sql": "SELECT * FROM ddb_benchmark_result;",
+        "question": "list the names off account holders who have negative balances",
+        "category": "easy"
+    },
+    {
+        "db_id": "laptop",
+        "query": "SELECT model FROM products WHERE maker = 'B';",
+        "setup_sql": ";",
+        "validation_sql": "SELECT * FROM ddb_benchmark_result;",
+        "question": "List only the model number of all products made by maker B.",
+        "category": "easy"
+    },
+    {
+        "db_id": "laptop",
+        "query": "SELECT model FROM products WHERE maker <> 'B';",
+        "setup_sql": ";",
+        "validation_sql": "SELECT * FROM ddb_benchmark_result;",
+        "question": "List the model numbers of all products not made by maker B.",
+        "category": "easy"
+    },
+    {
+        "db_id": "laptop",
+        "query": "SELECT AVG(speed) FROM pcs WHERE speed >= 3.00",
+        "setup_sql": ";",
+        "validation_sql": "SELECT * FROM ddb_benchmark_result;",
+        "question": "Return the average speed all PCs with speed >= 3.00",
+        "category": "easy"
+    },
+    {
+        "db_id": "laptop",
+        "query": "SELECT MAX(price) FROM printers WHERE color = 'TRUE' AND type='laser'",
+        "setup_sql": ";",
+        "validation_sql": "SELECT * FROM ddb_benchmark_result;",
+        "question": "Return the price of the most expensive color laser printer",
+        "category": "medium"
+    },
+    {
+        "db_id": "laptop",
+        "query": "SELECT MIN(paid) FROM sales WHERE type_of_payment LIKE '%visa%'",
+        "setup_sql": ";",
+        "validation_sql": "SELECT * FROM ddb_benchmark_result;",
+        "question": "Return the minimum amount paid by customers who used a visa card (debit or credit) to purchase a product",
+        "category": "medium"
+    },
+    {
+        "db_id": "laptop",
+        "query": "SELECT customer_id FROM customers  WHERE firstname LIKE '%e%' OR lastname LIKE '%e%'",
+        "setup_sql": ";",
+        "validation_sql": "SELECT * FROM ddb_benchmark_result;",
+        "question": "Find the customer_id of customers who have the letter 'e' either in their first name or in their last name",
+        "category": "medium"
+    },
+    {
+        "db_id": "laptop",
+        "query": "SELECT model, price/0.85 AS 'price (USD)'  FROM laptops  WHERE ram >= 1024",
+        "setup_sql": ";",
+        "validation_sql": "SELECT * FROM ddb_benchmark_result;",
+        "question": "Assume all prices in the table Laptops are in Euro. List the prices of laptops with at least 1024 ram. You should return the price in USD in a column called 'price (USD)'. Assume that 1 USD = 0.85 EURO. Name the price column 'price (USD)'.",
+        "category": "hard"
+    },
+    {
+        "db_id": "laptop",
+        "query": "SELECT maker FROM products GROUP BY maker HAVING COUNT(maker) > 4;",
+        "setup_sql": ";",
+        "validation_sql": "SELECT * FROM ddb_benchmark_result;",
+        "question": "Return a list of makers that make more than four different products.",
+        "category": "medium"
+    },
+    {
+        "db_id": "laptop",
+        "query": "SELECT model FROM laptops WHERE speed > 1.7 ORDER BY speed DESC;",
+        "setup_sql": ";",
+        "validation_sql": "SELECT * FROM ddb_benchmark_result;",
+        "question": "List all the laptop model numbers that have a speed greater than 1.7 in descending order of speed.",
+        "category": "medium"
+    },
+    {
+        "db_id": "laptop",
+        "query": "SELECT firstname \n        FROM sales \n        JOIN customers ON sales.customer_id = customers.customer_id \n        GROUP BY firstname \n        ORDER BY COUNT(firstname);",
+        "setup_sql": ";",
+        "validation_sql": "SELECT * FROM ddb_benchmark_result;",
+        "question": "List firstnames of customers in an ascending order based on the number of purchases made by customers with this firstname.",
+        "category": "medium"
+    },
+    {
+        "db_id": "laptop",
+        "query": "SELECT DISTINCT maker FROM products JOIN pcs ON products.model = pcs.model WHERE ram > 1500;",
+        "setup_sql": ";",
+        "validation_sql": "SELECT * FROM ddb_benchmark_result;",
+        "question": "List all the makers (with only one entry per maker) who make PCs with RAM greater than 1500.",
+        "category": "medium"
+    },
+    {
+        "db_id": "laptop",
+        "query": "SELECT city, AVG(paid) as 'avg_spend' FROM sales JOIN customers ON sales.customer_id = customers.customer_id GROUP BY city",
+        "setup_sql": ";",
+        "validation_sql": "SELECT * FROM ddb_benchmark_result;",
+        "question": "Find the city and the average amount of money spent by customers in each city. Name the column for the amount 'avg_spend'",
+        "category": "medium"
+    },
+    {
+        "db_id": "laptop",
+        "query": "SELECT color, MAX(price) as 'max_price' FROM printers GROUP BY color;",
+        "setup_sql": ";",
+        "validation_sql": "SELECT * FROM ddb_benchmark_result;",
+        "question": "Find the maximum price for each color of printer. Name the column for the maximum price 'max_price'",
+        "category": "medium"
+    },
+    {
+        "db_id": "who",
+        "query": "select country_name, max(pm25_concentration) as worst_pm25_for_country\nfrom ambient_air_quality\ngroup by country_name\norder by worst_pm25_for_country desc\nlimit 1",
+        "setup_sql": ";",
+        "validation_sql": "SELECT * FROM ddb_benchmark_result;",
+        "question": "Find the country with the worst single reading of air quality (highest PM 2.5 value). Show the PM 2.5 value as well.",
+        "category": "medium"
+    },
+    {
+        "db_id": "who",
+        "query": "select country_name, avg(pm25_concentration) as worst_avg_pm25_for_country\nfrom ambient_air_quality\ngroup by country_name\norder by worst_avg_pm25_for_country desc\nlimit 1",
+        "setup_sql": ";",
+        "validation_sql": "SELECT * FROM ddb_benchmark_result;",
+        "question": "Find the country with the worst average air quality (highest PM 2.5 value). Show the PM 2.5 value as well.",
+        "category": "medium"
+    },
+    {
+        "db_id": "who",
+        "query": "select distinct country_name from ambient_air_quality order by country_name",
+        "setup_sql": ";",
+        "validation_sql": "SELECT * FROM ddb_benchmark_result;",
+        "question": "Find all countries for which WHO air quality data is available. Sort alphabetically.",
+        "category": "medium"
+    },
+    {
+        "db_id": "who",
+        "query": "select year, avg(pm25_concentration) from ambient_air_quality \nwhere country_name = 'Singapore'\ngroup by year\norder by year",
+        "setup_sql": ";",
+        "validation_sql": "SELECT * FROM ddb_benchmark_result;",
+        "question": "Find Singapore air quality defined as PM2.5 concentration over time",
+        "category": "medium"
+    },
+    {
+        "db_id": "nyc",
+        "query": "SELECT COLUMNS('^trip_') FROM rideshare LIMIT 10;",
+        "setup_sql": ";",
+        "validation_sql": "SELECT * FROM ddb_benchmark_result;",
+        "question": "select only the column names from the rideshare table that start with trip_ and return the first 10 values",
+        "category": "duckdb"
+    },
+    {
+        "db_id": "nyc",
+        "query": "SELECT * FROM rideshare USING SAMPLE 1%;",
+        "setup_sql": ";",
+        "validation_sql": "SELECT * FROM ddb_benchmark_result;",
+        "question": "select a 1% sample from the nyc.rideshare table",
+        "category": "duckdb"
+    },
+    {
+        "db_id": "laptop",
+        "query": "SELECT * EXCLUDE (customer_id) FROM customers;\n",
+        "setup_sql": ";",
+        "validation_sql": "SELECT * FROM ddb_benchmark_result;",
+        "question": "select all columns from the customer table, except customer_id",
+        "category": "duckdb"
+    },
+    {
+        "db_id": "nyc",
+        "query": "SUMMARIZE rideshare;",
+        "setup_sql": ";",
+        "validation_sql": "SELECT * FROM ddb_benchmark_result;",
+        "question": "show summary statistics of the rideshare table",
+        "category": "duckdb"
+    },
+    {
+        "db_id": "none",
+        "query": "SELECT * FROM read_csv_auto(\n'https://raw.githubusercontent.com/datasciencedojo/datasets/master/titanic.csv')",
+        "setup_sql": ";",
+        "validation_sql": "SELECT * FROM ddb_benchmark_result;",
+        "question": "read a CSV from https://raw.githubusercontent.com/datasciencedojo/datasets/master/titanic.csv",
+        "category": "duckdb"
+    },
+    {
+        "db_id": "none",
+        "query": "COPY (SELECT * FROM read_csv_auto(\n'https://raw.githubusercontent.com/datasciencedojo/datasets/master/titanic.csv'))\nTO 'titanic.parquet' (FORMAT 'parquet');",
+        "setup_sql": ";",
+        "validation_sql": "SELECT * FROM 'titanic.parquet'",
+        "question": "read a CSV from https://raw.githubusercontent.com/datasciencedojo/datasets/master/titanic.csv and convert it to a parquet file called \"titanic\"",
+        "category": "duckdb"
+    },
+    {
+        "db_id": "none",
+        "query": "CREATE TABLE titanic AS (SELECT * FROM read_csv_auto(\n'https://raw.githubusercontent.com/datasciencedojo/datasets/master/titanic.csv'))",
+        "setup_sql": ";",
+        "validation_sql": "SELECT * FROM titanic;",
+        "question": "create a table called \"titanic\" from CSV file https://raw.githubusercontent.com/datasciencedojo/datasets/master/titanic.csv",
+        "category": "duckdb"
+    },
+    {
+        "db_id": "none",
+        "query": "PRAGMA default_null_order='NULLS LAST';",
+        "setup_sql": ";",
+        "validation_sql": "SELECT current_setting('default_null_order');",
+        "question": "configure duckdb to put null values last when sorting",
+        "category": "duckdb"
+    },
+    {
+        "db_id": "none",
+        "query": "CREATE TABLE IF NOT EXISTS products (\n    maker varchar(10),\n    model varchar(10),\n    type varchar(10));",
+        "setup_sql": ";",
+        "validation_sql": "SELECT * FROM products;",
+        "question": "create a table about products, that contains a maker, model and type column",
+        "category": "ddl"
+    },
+    {
+        "db_id": "product",
+        "query": "INSERT INTO products (maker, model, type)\nVALUES\n    ('A', '1001', 'pc');",
+        "setup_sql": ";",
+        "validation_sql": "SELECT * FROM products;",
+        "question": "add a row with values for model \"1001\" of type \"pc\", from maker \"A\" to products table",
+        "category": "ddl"
+    },
+    {
+        "db_id": "none",
+        "query": "CALL pragma_version();\n",
+        "setup_sql": ";",
+        "validation_sql": "SELECT * FROM ddb_benchmark_result;",
+        "question": "get current version of duckdb",
+        "category": "duckdb"
+    },
+    {
+        "db_id": "nyc",
+        "query": "PRAGMA table_info('rideshare');",
+        "setup_sql": ";",
+        "validation_sql": "SELECT * FROM ddb_benchmark_result;",
+        "question": "list all columns in table nyc.rideshare",
+        "category": "duckdb"
+    },
+    {
+        "db_id": "nyc",
+        "query": "PRAGMA show_tables;",
+        "setup_sql": ";",
+        "validation_sql": "SELECT * FROM ddb_benchmark_result;",
+        "question": "show all tables in the curent database",
+        "category": "duckdb"
+    },
+    {
+        "db_id": "laptop",
+        "query": "SELECT customer_id, model, sum(paid) FROM sales GROUP BY ALL",
+        "setup_sql": ";",
+        "validation_sql": "SELECT * FROM ddb_benchmark_result;",
+        "question": "how much did each customer spend per model type?",
+        "category": "easy"
+    },
+    {
+        "db_id": "nyc",
+        "query": "SELECT Max(datediff('minute', tpep_pickup_datetime, tpep_dropoff_datetime)) from nyc.taxi",
+        "setup_sql": ";",
+        "validation_sql": "SELECT * FROM ddb_benchmark_result;",
+        "question": "What was the longest taxi ride in minutes?",
+        "category": "hard"
+    },
+    {
+        "db_id": "who",
+        "query": "with per_region as (\n   select avg(pm10_concentration) as avg_pm10, who_region from ambient_air_quality group by who_region\n), max_region as (\n select who_region from per_region where  avg_pm10 = (select max(avg_pm10) from per_region)\n), min_city_value_in_max_region as (\n  select min(pm10_concentration) from ambient_air_quality where who_region in (from max_region)\n), min_city_in_max_region as (\n  select city from ambient_air_quality where pm10_concentration in (from min_city_value_in_max_region) and who_region in (from max_region)\n)\nfrom min_city_in_max_region",
+        "setup_sql": ";",
+        "validation_sql": "SELECT * FROM ddb_benchmark_result;",
+        "question": "What is the city with the lowest pm10 concentration in the region with the highest average pm10 concentration?",
+        "category": "hard"
+    },
+    {
+        "db_id": "hn",
+        "query": "SELECT *, regexp_extract(text, '([a-z0-9_\\.-]+)@([\\da-z\\.-]+)\\.([a-z\\.]{2,63})',0) email from hacker_news where email[:4]='test'",
+        "setup_sql": ";",
+        "validation_sql": "SELECT * FROM ddb_benchmark_result;",
+        "question": "Get all posts on hn that contain an email address starting with test. Return all original columns, plus a new column containing the email address.",
+        "category": "hard"
+    },
+    {
+        "db_id": "json",
+        "query": "SELECT employee.id, employee.first_name FROM employee_json",
+        "setup_sql": ";",
+        "validation_sql": "SELECT * FROM ddb_benchmark_result;",
+        "question": "Extract id and first_name properties as individual columns from the employee struct",
+        "category": "duckdb"
+    },
+    {
+        "db_id": "who",
+        "query": "SELECT who_region[1]::INT as region, * EXCLUDE (who_region)  FROM who.ambient_air_quality",
+        "setup_sql": ";",
+        "validation_sql": "SELECT * FROM ddb_benchmark_result;",
+        "question": "count quality measurements per region. Make sure to return the region code (first char of who_region) as integer and sort by region.",
+        "category": "duckdb"
+    },
+    {
+        "db_id": "flightinfo",
+        "query": "SELECT seat.seat_number FROM seat \nJOIN direct_flight ON direct_flight.flight_number = seat.flight_number \nJOIN airport AS departure_airport ON departure_airport.iata_code = direct_flight.departure_airport_iata_code \nJOIN airport AS arriving_airport ON arriving_airport.iata_code = direct_flight.arriving_airport_iata_code \nJOIN city AS departure_city ON departure_city.city_zipcode = departure_airport.city_zip_code \nJOIN city AS arriving_city ON arriving_city.city_zipcode = arriving_airport.city_zip_code \nWHERE departure_city.city_name = 'Bruxelles' AND arriving_city.city_name = 'Newark';",
+        "setup_sql": ";",
+        "validation_sql": "SELECT * FROM ddb_benchmark_result;",
+        "question": "Which seats were available on the flight from Bruxelles to Newark?",
+        "category": "hard"
+    },
+    {
+        "db_id": "laptop",
+        "query": "COPY customers FROM 'customers_12_12_2023.csv';",
+        "setup_sql": "COPY customers TO 'customers_12_12_2023.csv';",
+        "validation_sql": "SELECT * FROM customers;",
+        "question": "copy content of csv file customers_12_12_2023.csv into customers table",
+        "category": "duckdb"
+    },
+    {
+        "db_id": "laptop",
+        "query": "COPY customers FROM 'customers_12_12_2023.csv' (DELIMITER '\\t');",
+        "setup_sql": "COPY customers TO 'customers_12_12_2023.csv' (FORMAT CSV, DELIMITER '\\t');",
+        "validation_sql": "SELECT * FROM customers;",
+        "question": "copy content of csv file costomers_12_12_2023.csv into customers table with tab separator",
+        "category": "duckdb"
+    },
+    {
+        "db_id": "laptop",
+        "query": "COPY customers FROM 'customers_partitioned/city=Amsterdam/*.parquet';",
+        "setup_sql": "COPY customers TO 'customers_partitioned' (FORMAT PARQUET, PARTITION_BY (city), OVERWRITE_OR_IGNORE True);",
+        "validation_sql": "SELECT * FROM customers;;",
+        "question": "copy any parquet files from 'customers_partitioned/city=Amsterdam/' into customers table",
+        "category": "duckdb"
+    },
+    {
+        "db_id": "laptop",
+        "query": "COPY customers(customer_id) FROM 'customers_customer_ids.csv';",
+        "setup_sql": "COPY customers(customer_id) TO 'customers_customer_ids.csv';",
+        "validation_sql": "SELECT * FROM customers;",
+        "question": "copy only the customer_id column from the customers_customer_ids.csv into the customers tables",
+        "category": "duckdb"
+    },
+    {
+        "db_id": "laptop",
+        "query": "CREATE TABLE test_tbl AS SELECT * FROM read_json_auto('test.json');",
+        "setup_sql": "COPY customers TO 'test.json'\n",
+        "validation_sql": "SELECT * FROM test_tbl;",
+        "question": "read json file from test.json and create new table from it called 'test_tbl'",
+        "category": "duckdb"
+    },
+    {
+        "db_id": "laptop",
+        "query": "SELECT * FROM read_csv_auto('test.csv');",
+        "setup_sql": "COPY customers TO 'test.csv';",
+        "validation_sql": "SELECT * FROM ddb_benchmark_result;",
+        "question": "read csv from test.csv",
+        "category": "duckdb"
+    },
+    {
+        "db_id": "laptop",
+        "query": "SELECT * FROM read_csv_auto('test.csv', columns={'customer_id': 'VARCHAR', 'firstname': 'VARCHAR', 'lastname': 'VARCHAR'});",
+        "setup_sql": "COPY customers(customer_id, firstname, lastname) TO 'test.csv';",
+        "validation_sql": "SELECT * FROM ddb_benchmark_result;",
+        "question": "read csv from test.csv with predefined column and types - customer_id: string, firstname: string, lastname: string",
+        "category": "duckdb"
+    },
+    {
+        "db_id": "laptop",
+        "query": "SELECT * EXCLUDE (ram, hd) FROM pcs;",
+        "setup_sql": ";",
+        "validation_sql": "SELECT * FROM ddb_benchmark_result;",
+        "question": "select all columns from pcs table except for ram and hd",
+        "category": "duckdb"
+    },
+    {
+        "db_id": "laptop",
+        "query": "SELECT COLUMNS('name$') FROM customers;",
+        "setup_sql": ";",
+        "validation_sql": "SELECT * FROM ddb_benchmark_result;",
+        "question": "select all columns ending with 'name' from customers table",
+        "category": "duckdb"
+    },
+    {
+        "db_id": "laptop",
+        "query": "SELECT LENGTH(COLUMNS('name$')) FROM customers",
+        "setup_sql": ";",
+        "validation_sql": "SELECT * FROM ddb_benchmark_result;",
+        "question": "for each column ending with 'name' in the customers table, compute the string length",
+        "category": "duckdb"
+    },
+    {
+        "db_id": "laptop",
+        "query": "SELECT * REPLACE (upper(city) AS city) FROM customers;",
+        "setup_sql": ";",
+        "validation_sql": "SELECT * FROM ddb_benchmark_result;",
+        "question": "get all columns from customer table, and make all city names uppercase",
+        "category": "duckdb"
+    },
+    {
+        "db_id": "laptop",
+        "query": "EXPLAIN SELECT * FROM customers",
+        "setup_sql": ";",
+        "validation_sql": "SELECT * FROM ddb_benchmark_result;",
+        "question": "show query plan for query: SELECT * from customers",
+        "category": "duckdb"
+    },
+    {
+        "db_id": "laptop",
+        "query": "SELECT ascii(lastname) FROM customers;",
+        "setup_sql": ";",
+        "validation_sql": "SELECT * FROM ddb_benchmark_result;",
+        "question": "get the first character of the firstname column and cast it to an INT",
+        "category": "duckdb"
+    },
+    {
+        "db_id": "laptop",
+        "query": "SELECT model, speed::INTEGER FROM laptops;",
+        "setup_sql": ";",
+        "validation_sql": "SELECT * FROM ddb_benchmark_result;",
+        "question": "get laptop name and speed, return the speed as integer",
+        "category": "duckdb"
+    },
+    {
+        "db_id": "laptop_array",
+        "query": "SELECT phone_numbers[1] FROM customers;",
+        "setup_sql": ";",
+        "validation_sql": "SELECT * FROM ddb_benchmark_result;",
+        "question": "get the first phone number of each customer",
+        "category": "duckdb"
+    },
+    {
+        "db_id": "laptop_array",
+        "query": "INSERT INTO customers(customer_id, phone_numbers) VALUES (5, ['12312323', '23123344']);",
+        "setup_sql": ";",
+        "validation_sql": "SELECT * FROM customers;",
+        "question": "insert two phone numbers to customer with id 5 [\\\"12312323\\\", and '23123344']",
+        "category": "duckdb"
+    },
+    {
+        "db_id": "laptop",
+        "query": "ALTER TABLE customers ADD COLUMN phone_numbers VARCHAR[];",
+        "setup_sql": ";",
+        "validation_sql": "DESCRIBE customers;",
+        "question": "how to add a new column phone_numbers to the customers table, with array type varchar",
+        "category": "duckdb"
+    },
+    {
+        "db_id": "laptop",
+        "query": "SELECT firstname[1] FROM customers;",
+        "setup_sql": ";",
+        "validation_sql": "SELECT * FROM ddb_benchmark_result;",
+        "question": "get the first letter of the customers firstname",
+        "category": "duckdb"
+    },
+    {
+        "db_id": "laptop_array",
+        "query": "SELECT phone_numbers[:2] FROM customers;",
+        "setup_sql": ";",
+        "validation_sql": "SELECT * FROM ddb_benchmark_result;",
+        "question": "get the first two phone numbers from the phone numbers array of each customer",
+        "category": "duckdb"
+    },
+    {
+        "db_id": "laptop",
+        "query": "SELECT {'a':1, 'b':2, 'c':3};",
+        "setup_sql": ";",
+        "validation_sql": "SELECT * FROM ddb_benchmark_result;",
+        "question": "create a struct with keys a, b, c and values 1,2,3",
+        "category": "duckdb"
+    },
+    {
+        "db_id": "laptop",
+        "query": "SELECT [1,2,3];\n",
+        "setup_sql": ";",
+        "validation_sql": "SELECT * FROM ddb_benchmark_result;",
+        "question": "create array with values 1,2,3",
+        "category": "duckdb"
+    },
+    {
+        "db_id": "laptop",
+        "query": "CREATE TABLE test (embeddings FLOAT[100]);",
+        "setup_sql": ";",
+        "validation_sql": "DESCRIBE test;",
+        "question": "create table test with a fix-sized array column with 100 dimenions, called embeddings",
+        "category": "duckdb"
+    },
+    {
+        "db_id": "laptop",
+        "query": "CREATE TABLE test (person STRUCT(name VARCHAR, id INTEGER));",
+        "setup_sql": ";",
+        "validation_sql": "DESCRIBE test;",
+        "question": "create table test with a struct column called person with properties name and id",
+        "category": "duckdb"
+    },
+    {
+        "db_id": "laptop_struct",
+        "query": "SELECT person.name, person.id FROM test;",
+        "setup_sql": ";",
+        "validation_sql": "SELECT * FROM ddb_benchmark_result;",
+        "question": "get persons name and persons id from the test table.",
+        "category": "duckdb"
+    },
+    {
+        "db_id": "laptop",
+        "query": "UPDATE customers SET email = NULL;",
+        "setup_sql": ";",
+        "validation_sql": "SELECT email FROM customers;",
+        "question": "remove all values from email column in customers table",
+        "category": "duckdb"
+    },
+    {
+        "db_id": "laptop_json",
+        "query": "ALTER TABLE customers ALTER COLUMN email SET DATA TYPE VARCHAR;",
+        "setup_sql": ";",
+        "validation_sql": "DESCRIBE customers;",
+        "question": "make customer email of type VARCHAR",
+        "category": "duckdb"
+    },
+    {
+        "db_id": "laptop_json",
+        "query": "INSERT INTO customers (customer_id, email) VALUES (5,'{\"from\": \"test2@gmail.com\", \"to\": \"test@gmail.com\"}');",
+        "setup_sql": ";",
+        "validation_sql": "SELECT * FROM customers;",
+        "question": "insert json into customer email for customer id 5: {'from': 'test2@gmail.com', 'to': 'test@gmail.com'}",
+        "category": "duckdb"
+    },
+    {
+        "db_id": "laptop_json",
+        "query": "SELECT customers.email->>'from' FROM customers;",
+        "setup_sql": ";",
+        "validation_sql": "SELECT * FROM ddb_benchmark_result;",
+        "question": "get 'from' field from customer email json",
+        "category": "duckdb"
+    },
+    {
+        "db_id": "laptop",
+        "query": "SUMMARIZE customers;",
+        "setup_sql": ";",
+        "validation_sql": "SELECT * FROM ddb_benchmark_result;",
+        "question": "summarize the customer table",
+        "category": "duckdb"
+    },
+    {
+        "db_id": "laptop",
+        "query": "SELECT * FROM customers USING SAMPLE 10% (reservoir);",
+        "setup_sql": ";",
+        "validation_sql": "SELECT count(*) FROM ddb_benchmark_result;",
+        "question": "sample 10% from the customers table using reservoir sampling",
+        "category": "duckdb"
+    },
+    {
+        "db_id": "laptop",
+        "query": "SET threads = 10;",
+        "setup_sql": ";",
+        "validation_sql": "SELECT current_setting('threads');",
+        "question": "set number of threads to 10",
+        "category": "duckdb"
+    },
+    {
+        "db_id": "laptop",
+        "query": "SET memory_limit = '20G';\n",
+        "setup_sql": ";",
+        "validation_sql": "SELECT current_setting('memory_limit');",
+        "question": "set memory limit to 20 gigabyte",
+        "category": "duckdb"
+    },
+    {
+        "db_id": "laptop",
+        "query": "SELECT * EXCLUDE (price), avg(price) FROM laptops GROUP BY ALL;",
+        "setup_sql": ";",
+        "validation_sql": "SELECT * FROM ddb_benchmark_result;",
+        "question": "show the average price of laptop and group by the remaining columns",
+        "category": "duckdb"
+    },
+    {
+        "db_id": "laptop",
+        "query": "SELECT * FROM laptops WHERE price > 1000 ORDER BY ALL;\n",
+        "setup_sql": ";",
+        "validation_sql": "SELECT * FROM ddb_benchmark_result;",
+        "question": "show all laptops with price above 1000 and order by all columns",
+        "category": "duckdb"
+    },
+    {
+        "db_id": "laptop",
+        "query": "ATTACH 'who.ddb';",
+        "setup_sql": ";",
+        "validation_sql": "SHOW DATABASES;",
+        "question": "attach database file who.ddb",
+        "category": "duckdb"
+    }
+]
