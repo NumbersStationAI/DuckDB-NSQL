@@ -26,3 +26,5 @@ langchain
 pydantic
 wurlitzer==3.0.3
 llama_cpp_python==0.2.33
+gradio==3.50.0
+gradio_client==0.6.1
