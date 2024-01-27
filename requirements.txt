@@ -1,4 +1,4 @@
-manifest-ml[all]==0.1.8
+manifest-ml[all]==0.1.9
 pandas>=2.0.0
 sqlalchemy<2.0.0
 transformers>=4.34.1
@@ -23,4 +23,6 @@ packaging==23.2
 ninja==1.11.1.1
 flash-attn==2.3.3
 langchain
-pydantic>2
+pydantic
+wurlitzer==3.0.3
+llama_cpp_python==0.2.33
