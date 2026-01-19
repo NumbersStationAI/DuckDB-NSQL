@@ -58,6 +58,16 @@ The training data for this model consists of two parts: 1) 200k synthetically ge
 
 Please refer to the `eval/` folder to check the details for evaluating the model against our proposed DuckDB benchmark.
 
+## Contributors
+
+- **Vishal Motwani** — Founding Head of Product, Numbers Station AI  
+- **Sen Wu** — Co-founder, Numbers Station AI  
+- **Laurel Orr** — Principal Developer, Numbers Station AI  
+- **Till Döhmen** — DuckDB  
+- **Jordan Tigani** — DuckDB
+
 ## Acknowledgement
 
 We would like to express our appreciation to all authors of the evaluation scripts. Their work made this project possible.
+
+
