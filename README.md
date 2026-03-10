@@ -60,7 +60,7 @@ Please refer to the `eval/` folder to check the details for evaluating the model
 
 ## Contributors
 
-- **Vishal Motwani** — Founding Product Engineer, Numbers Station AI  
+- **Vishal Motwani** — Founding Product Manager, Numbers Station AI  
 - **Sen Wu** — Co-founder, Numbers Station AI  
 - **Laurel Orr** — Principal Developer, Numbers Station AI  
 - **Till Döhmen** — DuckDB  
